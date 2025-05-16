@@ -23,15 +23,16 @@
     }
 
     .scaler {
-      width: 1000px; /* 固定的原始宽度 */
+      width: 1000px; /* 固定原始宽度 */
       transform-origin: top left;
       transition: transform 0.2s ease-out;
     }
 
     .container {
       display: flex;
-      justify-content: space-between;
+      justify-content: center; /* 改这里：让所有时钟居中排列 */
       gap: 16px;
+      flex-wrap: wrap; /* 加这个：让小屏时自动换行 */
     }
 
     .city-block {
@@ -121,9 +122,9 @@
     function resizeScaler() {
       const wrapper = document.querySelector('.wrapper');
       const scaler = document.getElementById('scaler');
-      const containerWidth = 1000; // 原始设计宽度
+      const containerWidth = 1000;
 
-      const scale = Math.min(wrapper.clientWidth / containerWidth, 1); // 不放大，只缩小
+      const scale = Math.min(wrapper.clientWidth / containerWidth, 1);
       scaler.style.transform = `scale(${scale})`;
     }
 

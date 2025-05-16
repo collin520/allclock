@@ -17,16 +17,16 @@
     }
 
     .scale-wrapper {
-      transform-origin: top left;
       display: inline-block;
+      transform-origin: top left;
     }
 
     .container {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      display: flex;
+      flex-direction: row;
       gap: 24px;
-      width: 1000px;
-      text-align: center;
+      white-space: nowrap; /* 关键：防止内部换行 */
+      width: max-content;
     }
 
     .city-block {
@@ -34,6 +34,8 @@
       border-radius: 12px;
       padding: 16px;
       box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+      min-width: 160px;
+      text-align: center;
     }
 
     .city-name {
@@ -107,10 +109,12 @@
     updateTime();
     setInterval(updateTime, 1000);
 
-    // 自适应缩放函数
+    // 缩放适配
     function scaleToFit() {
       const wrapper = document.getElementById("wrapper");
-      const scale = Math.min(window.innerWidth / 1000, 1);
+      const baseWidth = 1000;
+      const screenWidth = window.innerWidth;
+      const scale = Math.min(screenWidth / baseWidth, 1);
       wrapper.style.transform = `scale(${scale})`;
     }
 

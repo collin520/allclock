@@ -2,35 +2,118 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
-<title>简约风格网页时钟</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>多城市时钟</title>
 <style>
+  /* 简约苹果风格字体 */
+  @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Text&display=swap');
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
       Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    text-align: center;
-    margin-top: 50px;
-    background-color: #fff;
+    background: #fff;
     color: #111;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    margin: 0;
   }
-  #clock {
-    font-size: 48px;
+  .container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 24px;
+    max-width: 900px;
+    width: 100%;
+    text-align: center;
+  }
+  .city-block {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+  }
+  .city-name {
     font-weight: 600;
-    letter-spacing: 0.05em;
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+  }
+  .date, .time {
+    font-size: 1.1rem;
+    margin: 4px 0;
+  }
+  .label-row {
+    font-weight: 500;
+    color: #666;
+    margin-bottom: 16px;
   }
 </style>
 </head>
 <body>
-  <div id="clock">--:--:--</div>
-  <script>
-    function updateClock() {
+  <div class="container">
+    <div class="city-block" id="ny">
+      <div class="city-name">纽约</div>
+      <div class="label-row">日期</div>
+      <div class="date" id="date-ny"></div>
+      <div class="label-row">时间</div>
+      <div class="time" id="time-ny"></div>
+    </div>
+    <div class="city-block" id="la">
+      <div class="city-name">洛杉矶</div>
+      <div class="label-row">日期</div>
+      <div class="date" id="date-la"></div>
+      <div class="label-row">时间</div>
+      <div class="time" id="time-la"></div>
+    </div>
+    <div class="city-block" id="uk">
+      <div class="city-name">英国</div>
+      <div class="label-row">日期</div>
+      <div class="date" id="date-uk"></div>
+      <div class="label-row">时间</div>
+      <div class="time" id="time-uk"></div>
+    </div>
+    <div class="city-block" id="de">
+      <div class="city-name">德国</div>
+      <div class="label-row">日期</div>
+      <div class="date" id="date-de"></div>
+      <div class="label-row">时间</div>
+      <div class="time" id="time-de"></div>
+    </div>
+    <div class="city-block" id="au">
+      <div class="city-name">澳大利亚</div>
+      <div class="label-row">日期</div>
+      <div class="date" id="date-au"></div>
+      <div class="label-row">时间</div>
+      <div class="time" id="time-au"></div>
+    </div>
+  </div>
+
+<script>
+  // 各城市对应的时区标识（IANA时区名）
+  const cities = {
+    ny: "America/New_York",
+    la: "America/Los_Angeles",
+    uk: "Europe/London",
+    de: "Europe/Berlin",
+    au: "Australia/Sydney"
+  };
+
+  function updateTime() {
+    const optionsDate = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    const optionsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+
+    for (const cityId in cities) {
+      const tz = cities[cityId];
       const now = new Date();
-      const h = now.getHours().toString().padStart(2, '0');
-      const m = now.getMinutes().toString().padStart(2, '0');
-      const s = now.getSeconds().toString().padStart(2, '0');
-      document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+
+      const dateStr = now.toLocaleDateString('zh-CN', { ...optionsDate, timeZone: tz });
+      const timeStr = now.toLocaleTimeString('zh-CN', { ...optionsTime, timeZone: tz });
+
+      document.getElementById(`date-${cityId}`).textContent = dateStr;
+      document.getElementById(`time-${cityId}`).textContent = timeStr;
     }
-    setInterval(updateClock, 1000);
-    updateClock();
-  </script>
+  }
+
+  updateTime();
+  setInterval(updateTime, 1000);
+</script>
 </body>
 </html>

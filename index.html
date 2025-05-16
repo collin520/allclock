@@ -1,47 +1,54 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>多城市时钟</title>
-<style>
-  body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-}
-  html, body {
-    height: 100%;
-    margin: 0;
-    background: #fff;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 24px;
-    max-width: 1000px;
-    width: 100%;
-    text-align: center;
-  }
-  .city-block {
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    padding: 16px;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
-  }
-  .city-name {
-    font-weight: 600;
-    font-size: 1.3rem;
-    margin-bottom: 12px;
-  }
-  .date, .time {
-    font-size: 1.1rem;
-    margin: 4px 0;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>多城市时钟</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+      width: 95vw;
+      max-width: 1000px;
+      text-align: center;
+    }
+
+    .city-block {
+      border: 1px solid #eee;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+      font-size: calc(1vw + 0.5rem); /* 根据屏幕宽度自动缩放 */
+    }
+
+    .city-name {
+      font-weight: bold;
+      font-size: 1.2em;
+      margin-bottom: 0.5rem;
+    }
+
+    .date, .time {
+      margin: 0.3rem 0;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -72,33 +79,33 @@
     </div>
   </div>
 
-<script>
-  const cities = {
-    ny: "America/New_York",
-    la: "America/Los_Angeles",
-    uk: "Europe/London",
-    de: "Europe/Berlin",
-    au: "Australia/Sydney"
-  };
+  <script>
+    const cities = {
+      ny: "America/New_York",
+      la: "America/Los_Angeles",
+      uk: "Europe/London",
+      de: "Europe/Berlin",
+      au: "Australia/Sydney"
+    };
 
-  function updateTime() {
-    const optionsDate = { year: 'numeric', month: '2-digit', day: '2-digit' };
-    const optionsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+    function updateTime() {
+      const optionsDate = { year: 'numeric', month: '2-digit', day: '2-digit' };
+      const optionsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
 
-    for (const cityId in cities) {
-      const tz = cities[cityId];
-      const now = new Date();
+      for (const cityId in cities) {
+        const tz = cities[cityId];
+        const now = new Date();
 
-      const dateStr = now.toLocaleDateString('zh-CN', { ...optionsDate, timeZone: tz });
-      const timeStr = now.toLocaleTimeString('en-US', { ...optionsTime, timeZone: tz });
+        const dateStr = now.toLocaleDateString('zh-CN', { ...optionsDate, timeZone: tz });
+        const timeStr = now.toLocaleTimeString('en-US', { ...optionsTime, timeZone: tz });
 
-      document.getElementById(`date-${cityId}`).textContent = dateStr;
-      document.getElementById(`time-${cityId}`).textContent = timeStr;
+        document.getElementById(`date-${cityId}`).textContent = dateStr;
+        document.getElementById(`time-${cityId}`).textContent = timeStr;
+      }
     }
-  }
 
-  updateTime();
-  setInterval(updateTime, 1000);
-</script>
+    updateTime();
+    setInterval(updateTime, 1000);
+  </script>
 </body>
 </html>
